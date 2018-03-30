@@ -1,1 +1,1 @@
-#rxjs-experiment, an autocomplete form and stock randomizer from the S&P
+# Pull and return a random stock from the S&P 500
