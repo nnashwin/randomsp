@@ -23,7 +23,6 @@ func getFirstElementByClassName(className string, n *html.Node) (element *html.N
 }
 
 func main() {
-
 	response, err := http.Get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
 	if err != nil {
 		log.Fatal(err)
