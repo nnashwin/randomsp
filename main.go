@@ -3,10 +3,16 @@ package main
 import (
 	"github.com/PuerkitoBio/goquery"
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
-func main() {
+func GetRandomInt(min, max int) int {
+	return min + rand.Intn(max-min)
+}
+
+func GetSPStocks() (stocks []string) {
 	res, err := http.Get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
 	if err != nil {
 		log.Fatal(err)
@@ -23,13 +29,25 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var stockSlice []string
-
 	tbody := doc.Find("tbody").First()
 	tbody.Find("tr").Each(func(i int, s *goquery.Selection) {
 		td := s.Find("td:first-child")
-		stockSlice = append(stockSlice, td.Text())
+		stocks = append(stocks, td.Text())
 	})
+	return
+}
 
-	log.Printf("%+v", stockSlice)
+func GetRandString(ss []string) string {
+	randInt := GetRandomInt(1, len(ss))
+	return ss[randInt:(randInt + 1)][0]
+}
+
+func main() {
+	rand.Seed(time.Now().UnixNano())
+	stockSlice := GetSPStocks()
+	// log.Printf("%+v", stockSlice)
+	log.Println(GetRandString(stockSlice))
+	for i := 0; i < 1000; i++ {
+		log.Println(GetRandString(stockSlice))
+	}
 }
