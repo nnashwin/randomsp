@@ -37,7 +37,7 @@ func GetRandomInt(min, max int) int {
 	return min + rand.Intn(max-min)
 }
 
-func GetRandString(ss []string) string {
+func GetRandomString(ss []string) string {
 	randInt := GetRandomInt(1, len(ss))
 	return ss[randInt:(randInt + 1)][0]
 }
@@ -45,5 +45,5 @@ func GetRandString(ss []string) string {
 func GetRandomSPStock() string {
 	rand.Seed(time.Now().UnixNano())
 	stockSlice := GetSPStocks()
-	return GetRandString(stockSlice)
+	return GetRandomString(stockSlice)
 }
