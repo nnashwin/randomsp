@@ -1,43 +1,35 @@
 package main
 
 import (
-	"golang.org/x/net/html"
+	"github.com/PuerkitoBio/goquery"
 	"log"
 	"net/http"
-	"strings"
 )
 
-func getFirstElementByClassName(className string, n *html.Node) (element *html.Node, ok bool) {
-	for _, a := range n.Attr {
-		if a.Key == "class" && strings.Contains(a.Val, className) {
-			return n, true
-		}
-	}
-
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		if element, ok = getFirstElementByClassName(className, c); ok {
-			return
-		}
-	}
-	return
-}
-
 func main() {
-	response, err := http.Get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
+	res, err := http.Get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer response.Body.Close()
-	root, err := html.Parse(response.Body)
+	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+		log.Fatalf("Status code error: %d %s", res.StatusCode, res.Status)
+	}
+
+	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	el, ok := getFirstElementByClassName("wikitable", root)
-	if !ok {
-		log.Fatal(err)
-	}
+	var stockSlice []string
 
-	log.Printf("%+v", el)
+	tbody := doc.Find("tbody").First()
+	tbody.Find("tr").Each(func(i int, s *goquery.Selection) {
+		td := s.Find("td:first-child")
+		stockSlice = append(stockSlice, td.Text())
+	})
+
+	log.Printf("%+v", stockSlice)
 }
