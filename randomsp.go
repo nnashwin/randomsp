@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func GetSPStocks() (stocks []string) {
+func GetStandardPoorsStocks() (stocks []string) {
 	res, err := http.Get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
 	if err != nil {
 		log.Fatal(err)
@@ -33,6 +33,30 @@ func GetSPStocks() (stocks []string) {
 	return
 }
 
+func GetNasdaqStocks() (stocks []string) {
+	res, err := http.Get("https://en.wikipedia.org/wiki/NASDAQ-100")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+		log.Fatalf("Status code error: %d %s", res.StatusCode, res.Status)
+	}
+
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	col := doc.Find(".column-count-2").First()
+	col.Find("li").Each(func(i int, s *goquery.Selection) {
+		log.Println(s.Text())
+	})
+	return
+}
+
 func GetRandomInt(min, max int) int {
 	return min + rand.Intn(max-min)
 }
@@ -44,6 +68,6 @@ func GetRandomString(ss []string) string {
 
 func GetRandomSPStock() string {
 	rand.Seed(time.Now().UnixNano())
-	stockSlice := GetSPStocks()
+	stockSlice := GetStandardPoorsStocks()
 	return GetRandomString(stockSlice)
 }

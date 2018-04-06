@@ -1,7 +1,6 @@
 package randomsp
 
 import (
-	"fmt"
 	"math/rand"
 	"strings"
 	"testing"
