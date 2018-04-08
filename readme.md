@@ -28,10 +28,16 @@ func main() {
 	randomsp.GetRandomNasdaqStock()
 	// ATVI
 
+	randomsp.GetRandomFinancialTimesStock()
+	// G4S
+
 	randomsp.GetRandomSPStock()
 	// WRK
 }
 ```
+
+## API
+Each method will return a string of a random stock from either the index you called or a random index 
 
 ## License
 
