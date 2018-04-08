@@ -86,6 +86,31 @@ func getFinancialTimesStocks() (stocks []string) {
 	return
 }
 
+func getItalianFinancialTimesStocks() (stocks []string) {
+	res, err := http.Get("https://en.wikipedia.org/wiki/FTSE_MIB")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+		log.Fatalf("Status code error: %d %s", res.StatusCode, res.Status)
+	}
+
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	tbody := doc.Find("#constituents > tbody")
+	tbody.Find("tr").Each(func(i int, s *goquery.Selection) {
+		td := s.Find("td:nth-child(2)")
+		stocks = append(stocks, td.Text())
+	})
+	return
+}
+
 func getRandomInt(min, max int) int {
 	return min + rand.Intn(max-min)
 }
@@ -113,8 +138,14 @@ func GetRandomFinancialTimesStock() string {
 	return getRandomString(stockSlice)
 }
 
+func GetRandomItalianFinancialTimesStock() string {
+	rand.Seed(time.Now().UnixNano())
+	stockSlice := getItalianFinancialTimesStocks()
+	return getRandomString(stockSlice)
+}
+
 func GetRandomIndexStock() string {
 	rand.Seed(time.Now().UnixNano())
-	stockFuncs := []func() string{GetRandomNasdaqStock, GetRandomSPStock, GetRandomFinancialTimesStock}
+	stockFuncs := []func() string{GetRandomNasdaqStock, GetRandomSPStock, GetRandomFinancialTimesStock, GetRandomItalianFinancialTimesStock}
 	return stockFuncs[getRandomInt(0, len(stockFuncs))]()
 }

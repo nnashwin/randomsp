@@ -33,6 +33,9 @@ func main() {
 
 	randomsp.GetRandomSPStock()
 	// WRK
+
+	randomsp.GetRandomItalianFinancialTimesStock()
+	// BPE
 }
 ```
 
