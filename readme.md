@@ -30,12 +30,6 @@ func main() {
 
 	randomsp.GetRandomSPStock()
 	// WRK
-
-	randomsp.GetNasdaqStocks()
-	// slice of NasdaqStocks
-
-	randomsp.GetStandardPoorsStocks()
-	// slice of S&P500 stocks
 }
 ```
 

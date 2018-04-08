@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func GetStandardPoorsStocks() (stocks []string) {
+func getStandardPoorsStocks() (stocks []string) {
 	res, err := http.Get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
 	if err != nil {
 		log.Fatal(err)
@@ -34,7 +34,7 @@ func GetStandardPoorsStocks() (stocks []string) {
 	return
 }
 
-func GetNasdaqStocks() (stocks []string) {
+func getNasdaqStocks() (stocks []string) {
 	res, err := http.Get("https://en.wikipedia.org/wiki/NASDAQ-100")
 	if err != nil {
 		log.Fatal(err)
@@ -61,29 +61,29 @@ func GetNasdaqStocks() (stocks []string) {
 	return
 }
 
-func GetRandomInt(min, max int) int {
+func getRandomInt(min, max int) int {
 	return min + rand.Intn(max-min)
 }
 
-func GetRandomString(ss []string) string {
-	randInt := GetRandomInt(1, len(ss))
+func getRandomString(ss []string) string {
+	randInt := getRandomInt(1, len(ss))
 	return ss[randInt:(randInt + 1)][0]
 }
 
 func GetRandomSPStock() string {
 	rand.Seed(time.Now().UnixNano())
-	stockSlice := GetStandardPoorsStocks()
-	return GetRandomString(stockSlice)
+	stockSlice := getStandardPoorsStocks()
+	return getRandomString(stockSlice)
 }
 
 func GetRandomNasdaqStock() string {
 	rand.Seed(time.Now().UnixNano())
-	stockSlice := GetNasdaqStocks()
-	return GetRandomString(stockSlice)
+	stockSlice := getNasdaqStocks()
+	return getRandomString(stockSlice)
 }
 
 func GetRandomIndexStock() string {
 	rand.Seed(time.Now().UnixNano())
 	stockFuncs := []func() string{GetRandomNasdaqStock, GetRandomSPStock}
-	return stockFuncs[GetRandomInt(0, 2)]()
+	return stockFuncs[getRandomInt(0, 2)]()
 }
