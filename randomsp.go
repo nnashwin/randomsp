@@ -75,3 +75,9 @@ func GetRandomSPStock() string {
 	stockSlice := GetStandardPoorsStocks()
 	return GetRandomString(stockSlice)
 }
+
+func GetRandomNasdaqStock() string {
+	rand.Seed(time.Now().UnixNano())
+	stockSlice := GetNasdaqStocks()
+	return GetRandomString(stockSlice)
+}
