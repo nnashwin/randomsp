@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -52,7 +53,10 @@ func GetNasdaqStocks() (stocks []string) {
 
 	col := doc.Find(".column-count-2").First()
 	col.Find("li").Each(func(i int, s *goquery.Selection) {
-		log.Println(s.Text())
+		str := s.Text()
+		idx1 := strings.Index(str, "(")
+		idx2 := strings.Index(str[idx1:], ")")
+		stocks = append(stocks, str[idx1+1:idx2+idx1])
 	})
 	return
 }
