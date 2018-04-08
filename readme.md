@@ -19,6 +19,26 @@ $ go get github.com/ru-lai/randomsp
 
 ## Usage
 ```
-randomsp.GetRandomIndexStock()
-// will return a random stock from a random Index
+import "github.com/ru-lai/randomsp"
+
+func main() {
+	randomsp.GetRandomIndexStock()
+	// ZTS
+
+	randomsp.GetRandomNasdaqStock()
+	// ATVI
+
+	randomsp.GetRandomSPStock()
+	// WRK
+
+	randomsp.GetNasdaqStocks()
+	// slice of NasdaqStocks
+
+	randomsp.GetStandardPoorsStocks()
+	// slice of S&P500 stocks
+}
 ```
+
+## License
+
+MIT © Tyler Boright
