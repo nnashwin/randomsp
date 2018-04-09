@@ -36,6 +36,9 @@ func main() {
 
 	randomsp.GetRandomItalianFinancialTimesStock()
 	// BPE
+
+	randomsp.GetRandomDaxStock()
+	// BMW
 }
 ```
 
