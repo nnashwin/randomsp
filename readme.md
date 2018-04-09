@@ -10,7 +10,7 @@ In the same vein of thought, randomsp was born.
 ## Indices
 The study from the article used 4 different stock indices to make their predictions: the UK FTSE, the MIB FTSE (Italian stock exchange), the DAX (German market), and the S&P 500.
 
-This library will include those plus the Nasdaq stock exchange.
+This library includes those 4 exchanges plus the Nasdaq stock exchange.
 
 ## Install
 ```
