@@ -9,21 +9,21 @@ import (
 	"time"
 )
 
-func getDaxStocks() (stocks []string) {
+func getDaxStocks() (stocks []string, err error) {
 	res, err := http.Get("https://en.wikipedia.org/wiki/DAX")
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		log.Fatalf("Status code error: %d %s", res.StatusCode, res.Status)
+		return
 	}
 
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	tables := doc.Find(".mw-parser-output > table")
@@ -34,21 +34,21 @@ func getDaxStocks() (stocks []string) {
 	return
 }
 
-func getFinancialTimesStocks() (stocks []string) {
+func getFinancialTimesStocks() (stocks []string, err error) {
 	res, err := http.Get("https://en.wikipedia.org/wiki/FTSE_100_Index")
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		log.Fatalf("Status code error: %d %s", res.StatusCode, res.Status)
+		return
 	}
 
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	tbody := doc.Find("#constituents > tbody")
@@ -59,21 +59,21 @@ func getFinancialTimesStocks() (stocks []string) {
 	return
 }
 
-func getItalianFinancialTimesStocks() (stocks []string) {
+func getItalianFinancialTimesStocks() (stocks []string, err error) {
 	res, err := http.Get("https://en.wikipedia.org/wiki/FTSE_MIB")
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		log.Fatalf("Status code error: %d %s", res.StatusCode, res.Status)
+		return
 	}
 
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	tbody := doc.Find("#constituents > tbody")
@@ -84,7 +84,7 @@ func getItalianFinancialTimesStocks() (stocks []string) {
 	return
 }
 
-func getNasdaqStocks() (stocks []string) {
+func getNasdaqStocks() (stocks []string, err error) {
 	res, err := http.Get("https://en.wikipedia.org/wiki/NASDAQ-100")
 	if err != nil {
 		log.Fatal(err)
@@ -93,12 +93,12 @@ func getNasdaqStocks() (stocks []string) {
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		log.Fatalf("Status code error: %d %s", res.StatusCode, res.Status)
+		return
 	}
 
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	col := doc.Find(".column-count-2").First()
@@ -111,21 +111,21 @@ func getNasdaqStocks() (stocks []string) {
 	return
 }
 
-func getStandardPoorsStocks() (stocks []string) {
+func getStandardPoorsStocks() (stocks []string, err error) {
 	res, err := http.Get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		log.Fatalf("Status code error: %d %s", res.StatusCode, res.Status)
+		return
 	}
 
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	tbody := doc.Find("tbody").First()
@@ -145,38 +145,66 @@ func getRandomString(ss []string) string {
 	return ss[randInt:(randInt + 1)][0]
 }
 
-func GetRandomDaxStock() string {
+func GetRandomDaxStock() (stockString string, err error) {
 	rand.Seed(time.Now().UnixNano())
-	stockSlice := getDaxStocks()
-	return getRandomString(stockSlice)
+	stockSlice, err := getDaxStocks()
+	if err != nil {
+		return
+	}
+
+	stockString = getRandomString(stockSlice)
+	return
 }
 
-func GetRandomFinancialTimesStock() string {
+func GetRandomFinancialTimesStock() (stockString string, err error) {
 	rand.Seed(time.Now().UnixNano())
-	stockSlice := getFinancialTimesStocks()
-	return getRandomString(stockSlice)
+	stockSlice, err := getFinancialTimesStocks()
+	if err != nil {
+		return
+	}
+
+	stockString = getRandomString(stockSlice)
+	return
 }
 
-func GetRandomItalianFinancialTimesStock() string {
+func GetRandomItalianFinancialTimesStock() (stockString string, err error) {
 	rand.Seed(time.Now().UnixNano())
-	stockSlice := getItalianFinancialTimesStocks()
-	return getRandomString(stockSlice)
+	stockSlice, err := getItalianFinancialTimesStocks()
+	if err != nil {
+		return
+	}
+
+	stockString = getRandomString(stockSlice)
+	return
 }
 
-func GetRandomIndexStock() string {
+func GetRandomNasdaqStock() (stockString string, err error) {
 	rand.Seed(time.Now().UnixNano())
-	stockFuncs := []func() string{GetRandomNasdaqStock, GetRandomSPStock, GetRandomFinancialTimesStock, GetRandomItalianFinancialTimesStock, GetRandomDaxStock}
-	return stockFuncs[getRandomInt(0, len(stockFuncs))]()
+	stockSlice, err := getNasdaqStocks()
+	if err != nil {
+		return
+	}
+
+	stockString = getRandomString(stockSlice)
+
+	return
 }
 
-func GetRandomNasdaqStock() string {
+func GetRandomSPStock() (stockString string, err error) {
 	rand.Seed(time.Now().UnixNano())
-	stockSlice := getNasdaqStocks()
-	return getRandomString(stockSlice)
+	stockSlice, err := getStandardPoorsStocks()
+	if err != nil {
+		return
+	}
+
+	stockString = getRandomString(stockSlice)
+
+	return
 }
 
-func GetRandomSPStock() string {
+func GetRandomIndexStock() (stockString string, err error) {
 	rand.Seed(time.Now().UnixNano())
-	stockSlice := getStandardPoorsStocks()
-	return getRandomString(stockSlice)
+	stockFuncs := []func() (string, error){GetRandomNasdaqStock, GetRandomSPStock, GetRandomFinancialTimesStock, GetRandomItalianFinancialTimesStock, GetRandomDaxStock}
+	stockString, err = stockFuncs[getRandomInt(0, len(stockFuncs))]()
+	return
 }
