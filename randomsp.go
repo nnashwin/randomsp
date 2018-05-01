@@ -145,66 +145,66 @@ func getRandomString(ss []string) string {
 	return ss[randInt:(randInt + 1)][0]
 }
 
-func GetRandomDaxStock() (stockString string, err error) {
+func GetRandomDaxStock() (stock Stock, err error) {
 	rand.Seed(time.Now().UnixNano())
 	stockSlice, err := getDaxStocks()
 	if err != nil {
 		return
 	}
 
-	stockString = getRandomString(stockSlice)
+	stock = Stock{getRandomString(stockSlice), "Dax"}
 	return
 }
 
-func GetRandomFinancialTimesStock() (stockString string, err error) {
+func GetRandomFinancialTimesStock() (stock Stock, err error) {
 	rand.Seed(time.Now().UnixNano())
 	stockSlice, err := getFinancialTimesStocks()
 	if err != nil {
 		return
 	}
 
-	stockString = getRandomString(stockSlice)
+	stock = Stock{getRandomString(stockSlice), "Financial Times"}
 	return
 }
 
-func GetRandomItalianFinancialTimesStock() (stockString string, err error) {
+func GetRandomItalianFinancialTimesStock() (stock Stock, err error) {
 	rand.Seed(time.Now().UnixNano())
 	stockSlice, err := getItalianFinancialTimesStocks()
 	if err != nil {
 		return
 	}
 
-	stockString = getRandomString(stockSlice)
+	stock = Stock{getRandomString(stockSlice), "Italian Financial Times"}
 	return
 }
 
-func GetRandomNasdaqStock() (stockString string, err error) {
+func GetRandomNasdaqStock() (stock Stock, err error) {
 	rand.Seed(time.Now().UnixNano())
 	stockSlice, err := getNasdaqStocks()
 	if err != nil {
 		return
 	}
 
-	stockString = getRandomString(stockSlice)
+	stock = Stock{getRandomString(stockSlice), "Nasdaq"}
 
 	return
 }
 
-func GetRandomSPStock() (stockString string, err error) {
+func GetRandomSPStock() (stock Stock, err error) {
 	rand.Seed(time.Now().UnixNano())
 	stockSlice, err := getStandardPoorsStocks()
 	if err != nil {
 		return
 	}
 
-	stockString = getRandomString(stockSlice)
+	stock = Stock{getRandomString(stockSlice), "SP"}
 
 	return
 }
 
-func GetRandomIndexStock() (stockString string, err error) {
+func GetRandomIndexStock() (stock Stock, err error) {
 	rand.Seed(time.Now().UnixNano())
-	stockFuncs := []func() (string, error){GetRandomNasdaqStock, GetRandomSPStock, GetRandomFinancialTimesStock, GetRandomItalianFinancialTimesStock, GetRandomDaxStock}
-	stockString, err = stockFuncs[getRandomInt(0, len(stockFuncs))]()
+	stockFuncs := []func() (Stock, error){GetRandomNasdaqStock, GetRandomSPStock, GetRandomFinancialTimesStock, GetRandomItalianFinancialTimesStock, GetRandomDaxStock}
+	stock, err = stockFuncs[getRandomInt(0, len(stockFuncs))]()
 	return
 }
