@@ -197,7 +197,7 @@ func GetRandomSPStock() (stock Stock, err error) {
 		return
 	}
 
-	stock = Stock{getRandomString(stockSlice), "SP"}
+	stock = Stock{getRandomString(stockSlice), "S&P 500"}
 
 	return
 }
