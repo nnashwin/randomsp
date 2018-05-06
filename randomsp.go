@@ -2,7 +2,6 @@ package randomsp
 
 import (
 	"github.com/PuerkitoBio/goquery"
-	"log"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -87,7 +86,7 @@ func getItalianFinancialTimesStocks() (stocks []string, err error) {
 func getNasdaqStocks() (stocks []string, err error) {
 	res, err := http.Get("https://en.wikipedia.org/wiki/NASDAQ-100")
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	defer res.Body.Close()
