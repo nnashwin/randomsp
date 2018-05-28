@@ -100,7 +100,7 @@ func getNasdaqStocks() (stocks []string, err error) {
 		return
 	}
 
-	col := doc.Find(".column-count-2").First()
+	col := doc.Find(".div-col")
 	col.Find("li").Each(func(i int, s *goquery.Selection) {
 		str := s.Text()
 		idx1 := strings.Index(str, "(")
