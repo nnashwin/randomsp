@@ -1,11 +1,11 @@
 package randomsp
 
 import (
-	"github.com/PuerkitoBio/goquery"
 	"math/rand"
 	"net/http"
-	"strings"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 func getDaxStocks() (stocks []string, err error) {
@@ -100,12 +100,10 @@ func getNasdaqStocks() (stocks []string, err error) {
 		return
 	}
 
-	col := doc.Find(".div-col")
-	col.Find("li").Each(func(i int, s *goquery.Selection) {
-		str := s.Text()
-		idx1 := strings.Index(str, "(")
-		idx2 := strings.Index(str[idx1:], ")")
-		stocks = append(stocks, str[idx1+1:idx2+idx1])
+	tbody := doc.Find("#constituents > tbody")
+	tbody.Find("tr").Each(func(i int, s *goquery.Selection) {
+		td := s.Find("td:nth-child(2)")
+		stocks = append(stocks, td.Text())
 	})
 	return
 }
