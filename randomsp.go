@@ -26,9 +26,11 @@ func getDaxStocks() (stocks []string, err error) {
 	}
 
 	tables := doc.Find(".mw-parser-output > table")
-	tables.Filter(".sortable").Find("tr").Each(func(i int, s *goquery.Selection) {
+	tables.Filter("#constituents").Find("tr").Each(func(i int, s *goquery.Selection) {
 		td := s.Find("td:nth-child(4)")
-		stocks = append(stocks, td.Text())
+		if td.Text() != "" {
+			stocks = append(stocks, td.Text())
+		}
 	})
 	return
 }
@@ -53,7 +55,9 @@ func getFinancialTimesStocks() (stocks []string, err error) {
 	tbody := doc.Find("#constituents > tbody")
 	tbody.Find("tr").Each(func(i int, s *goquery.Selection) {
 		td := s.Find("td:nth-child(2)")
-		stocks = append(stocks, td.Text())
+		if td.Text() != "" {
+			stocks = append(stocks, td.Text())
+		}
 	})
 	return
 }
@@ -78,7 +82,9 @@ func getItalianFinancialTimesStocks() (stocks []string, err error) {
 	tbody := doc.Find("#constituents > tbody")
 	tbody.Find("tr").Each(func(i int, s *goquery.Selection) {
 		td := s.Find("td:nth-child(2)")
-		stocks = append(stocks, td.Text())
+		if td.Text() != "" {
+			stocks = append(stocks, td.Text())
+		}
 	})
 	return
 }
@@ -103,7 +109,9 @@ func getNasdaqStocks() (stocks []string, err error) {
 	tbody := doc.Find("#constituents > tbody")
 	tbody.Find("tr").Each(func(i int, s *goquery.Selection) {
 		td := s.Find("td:nth-child(2)")
-		stocks = append(stocks, td.Text())
+		if td.Text() != "" {
+			stocks = append(stocks, td.Text())
+		}
 	})
 	return
 }
@@ -128,7 +136,9 @@ func getStandardPoorsStocks() (stocks []string, err error) {
 	tbody := doc.Find("tbody").First()
 	tbody.Find("tr").Each(func(i int, s *goquery.Selection) {
 		td := s.Find("td:first-child")
-		stocks = append(stocks, td.Text())
+		if td.Text() != "" {
+			stocks = append(stocks, td.Text())
+		}
 	})
 	return
 }
