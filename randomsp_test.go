@@ -8,15 +8,6 @@ import (
 	"time"
 )
 
-func TestUnitGetRandomInt(t *testing.T) {
-	rand.Seed(time.Now().UnixNano())
-	int1 := getRandomInt(1, 1000000)
-	int2 := getRandomInt(1, 1000000)
-	if int1 == int2 {
-		t.Error("the GetRandomInt ints should not equal each other")
-	}
-}
-
 func TestUnitGetRandomString(t *testing.T) {
 	rand.Seed(time.Now().UnixNano())
 	str := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"

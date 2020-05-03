@@ -1,11 +1,9 @@
 package randomsp
 
 import (
-	"math/rand"
-	"net/http"
-	"time"
-
 	"github.com/PuerkitoBio/goquery"
+	"github.com/ru-lai/go-rint"
+	"net/http"
 )
 
 func getDaxStocks() (stocks []string, err error) {
@@ -143,17 +141,13 @@ func getStandardPoorsStocks() (stocks []string, err error) {
 	return
 }
 
-func getRandomInt(min, max int) int {
-	return min + rand.Intn(max-min)
-}
-
 func getRandomString(ss []string) string {
-	randInt := getRandomInt(1, len(ss))
+	randInt := rint.GenRange(1, len(ss))
 	return ss[randInt:(randInt + 1)][0]
 }
 
 func GetRandomDaxStock() (stock Stock, err error) {
-	rand.Seed(time.Now().UnixNano())
+	rint.Init()
 	stockSlice, err := getDaxStocks()
 	if err != nil {
 		return
@@ -164,7 +158,7 @@ func GetRandomDaxStock() (stock Stock, err error) {
 }
 
 func GetRandomFinancialTimesStock() (stock Stock, err error) {
-	rand.Seed(time.Now().UnixNano())
+	rint.Init()
 	stockSlice, err := getFinancialTimesStocks()
 	if err != nil {
 		return
@@ -175,7 +169,7 @@ func GetRandomFinancialTimesStock() (stock Stock, err error) {
 }
 
 func GetRandomItalianFinancialTimesStock() (stock Stock, err error) {
-	rand.Seed(time.Now().UnixNano())
+	rint.Init()
 	stockSlice, err := getItalianFinancialTimesStocks()
 	if err != nil {
 		return
@@ -186,7 +180,7 @@ func GetRandomItalianFinancialTimesStock() (stock Stock, err error) {
 }
 
 func GetRandomNasdaqStock() (stock Stock, err error) {
-	rand.Seed(time.Now().UnixNano())
+	rint.Init()
 	stockSlice, err := getNasdaqStocks()
 	if err != nil {
 		return
@@ -198,7 +192,7 @@ func GetRandomNasdaqStock() (stock Stock, err error) {
 }
 
 func GetRandomSPStock() (stock Stock, err error) {
-	rand.Seed(time.Now().UnixNano())
+	rint.Init()
 	stockSlice, err := getStandardPoorsStocks()
 	if err != nil {
 		return
@@ -210,8 +204,8 @@ func GetRandomSPStock() (stock Stock, err error) {
 }
 
 func GetRandomIndexStock() (stock Stock, err error) {
-	rand.Seed(time.Now().UnixNano())
+	rint.Init()
 	stockFuncs := []func() (Stock, error){GetRandomNasdaqStock, GetRandomSPStock, GetRandomFinancialTimesStock, GetRandomItalianFinancialTimesStock, GetRandomDaxStock}
-	stock, err = stockFuncs[getRandomInt(0, len(stockFuncs))]()
+	stock, err = stockFuncs[rint.GenRange(0, len(stockFuncs))]()
 	return
 }
