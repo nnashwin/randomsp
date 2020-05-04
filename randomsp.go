@@ -4,6 +4,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/ru-lai/go-rint"
 	"net/http"
+	"strings"
 )
 
 func getDaxStocks() (stocks []string, err error) {
@@ -153,7 +154,7 @@ func GetRandomDaxStock() (stock Stock, err error) {
 		return
 	}
 
-	stock = Stock{getRandomString(stockSlice), "Dax"}
+	stock = Stock{strings.TrimSpace(getRandomString(stockSlice)), "Dax"}
 	return
 }
 
@@ -164,7 +165,7 @@ func GetRandomFinancialTimesStock() (stock Stock, err error) {
 		return
 	}
 
-	stock = Stock{getRandomString(stockSlice), "Financial Times"}
+	stock = Stock{strings.TrimSpace(getRandomString(stockSlice)), "Financial Times"}
 	return
 }
 
@@ -175,7 +176,7 @@ func GetRandomItalianFinancialTimesStock() (stock Stock, err error) {
 		return
 	}
 
-	stock = Stock{getRandomString(stockSlice), "Italian Financial Times"}
+	stock = Stock{strings.TrimSpace(getRandomString(stockSlice)), "Italian Financial Times"}
 	return
 }
 
@@ -186,7 +187,7 @@ func GetRandomNasdaqStock() (stock Stock, err error) {
 		return
 	}
 
-	stock = Stock{getRandomString(stockSlice), "Nasdaq"}
+	stock = Stock{strings.TrimSpace(getRandomString(stockSlice)), "Nasdaq"}
 
 	return
 }
@@ -198,7 +199,7 @@ func GetRandomSPStock() (stock Stock, err error) {
 		return
 	}
 
-	stock = Stock{getRandomString(stockSlice), "S&P 500"}
+	stock = Stock{strings.TrimSpace(getRandomString(stockSlice)), "S&P 500"}
 
 	return
 }

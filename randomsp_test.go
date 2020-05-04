@@ -94,3 +94,31 @@ func TestIntegrationAcronymsReturned(t *testing.T) {
 		}
 	}
 }
+
+// create a struct to allow easier printing of the function name
+type testStockFn struct {
+	Name string
+	Fn   func() (Stock, error)
+}
+
+func TestIntegrationStockStringsRemoveSpaces(t *testing.T) {
+	stockFuncs := []testStockFn{
+		testStockFn{Name: "GetRandomNasdaqStock", Fn: GetRandomNasdaqStock},
+		testStockFn{Name: "GetRandomSPStock", Fn: GetRandomSPStock},
+		testStockFn{Name: "GetRandomFinancialTimesStock", Fn: GetRandomFinancialTimesStock},
+		testStockFn{Name: "GetRandomItalianFinancialTimesStock", Fn: GetRandomItalianFinancialTimesStock},
+		testStockFn{Name: "GetRandomDaxStock", Fn: GetRandomDaxStock},
+	}
+
+	for _, stockFn := range stockFuncs {
+		stock, err := stockFn.Fn()
+		if err != nil {
+			t.Fatalf("The stockFn did not return a stock correctly. Stock Function: %s\nError: %s\n", stockFn.Name, err)
+		}
+
+		sLen := len(stock.Symbol)
+		if string(stock.Symbol[0]) == " " || string(stock.Symbol[sLen-1]) == " " {
+			t.Fatalf("A stock was returned with an untrimmed Symbol. Symbol: %q\n, First Character: %s\n, Last Character: %s\n", stock.Symbol, string(stock.Symbol[0]), string(stock.Symbol[sLen-1]))
+		}
+	}
+}
