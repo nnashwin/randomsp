@@ -2,7 +2,7 @@ package randomsp
 
 import (
 	"github.com/PuerkitoBio/goquery"
-	"github.com/ru-lai/go-rint"
+	"github.com/tlboright/go-rint"
 	"net/http"
 	"strings"
 )
