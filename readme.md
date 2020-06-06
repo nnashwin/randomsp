@@ -8,9 +8,12 @@ Based on some research through computer simulations, it was found that perhaps a
 In the same vein of thought, randomsp was born.
 
 ## Indices
-The study from the article used 4 different stock indices to make their predictions: the UK FTSE, the MIB FTSE (Italian stock exchange), the DAX (German market), and the S&P 500.
+The study from the article used 5 different stock indices to make their predictions: the UK FTSE, the MIB FTSE (Italian stock exchange), the Nikkei 225 (Japanese market), the DAX (German market), and the S&P 500.
 
-This library includes those 4 exchanges plus the Nasdaq stock exchange.
+This library includes those 5 indices plus the Nasdaq stock exchange.
+
+## Notes
+- The Nikkei 225 stocks have symbols, but more often than not are denoted by a number value in their index.  Because of this, the name of the company and number are returned instead of the symbol acryonym.
 
 ## Install
 ```
@@ -22,28 +25,37 @@ $ go get github.com/ru-lai/randomsp
 import "github.com/ru-lai/randomsp"
 
 func main() {
-	randomsp.GetRandomIndexStock()
+	stock, err := randomsp.GetRandomIndexStock()
 	// ZTS
 
-	randomsp.GetRandomNasdaqStock()
+	stock, err := randomsp.GetRandomNasdaqStock()
 	// ATVI
 
-	randomsp.GetRandomFinancialTimesStock()
+	stock, err := randomsp.GetRandomFinancialTimesStock()
 	// G4S
 
-	randomsp.GetRandomSPStock()
+	stock, err := randomsp.GetRandomSPStock()
 	// WRK
 
-	randomsp.GetRandomItalianFinancialTimesStock()
+	stock, err := randomsp.GetRandomItalianFinancialTimesStock()
 	// BPE
 
-	randomsp.GetRandomDaxStock()
+        stock, err := randomsp.GetRandomNikkeiStock()
+        // Tokyu Land 3289
+
+	stock, err := randomsp.GetRandomDaxStock()
 	// BMW
+
+        // each function call should have error handling
+        if err != nil {
+            // handle error here
+            log.Fatal(err)
+        }
 }
 ```
 
 ## API
-Each method will return a string of a random stock from either the index you called or a random index 
+Each method will return a string of a random stock from either the index you called or a random index and an error if applicable
 
 ## License
 
