@@ -1,6 +1,7 @@
 package randomsp
 
 import (
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/tlboright/go-rint"
 	"net/http"
@@ -115,6 +116,39 @@ func getNasdaqStocks() (stocks []string, err error) {
 	return
 }
 
+func getNikkeiStocks() (stocks []string, err error) {
+	res, err := http.Get("https://en.wikipedia.org/wiki/Nikkei_225")
+	if err != nil {
+		return
+	}
+
+	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+		return
+	}
+
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	if err != nil {
+		return
+	}
+
+	// the list of stock names underneath the titles
+	doc.Find("h3 + ul").Each(func(i int, s *goquery.Selection) {
+		lis := s.Find("li")
+		lis.Each(func(i int, s *goquery.Selection) {
+			name := s.Find("a:nth-child(1)")
+			symbol := s.Find("a:nth-child(3)")
+
+			if name.Text() != "" && symbol.Text() != "" {
+				stocks = append(stocks, fmt.Sprintf("%s %s\n", name.Text(), symbol.Text()))
+			}
+		})
+	})
+
+	return
+}
+
 func getStandardPoorsStocks() (stocks []string, err error) {
 	res, err := http.Get("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")
 	if err != nil {
@@ -192,6 +226,18 @@ func GetRandomNasdaqStock() (stock Stock, err error) {
 	return
 }
 
+func GetRandomNikkeiStock() (stock Stock, err error) {
+	rint.Init()
+	stockSlice, err := getNikkeiStocks()
+	if err != nil {
+		return
+	}
+
+	stock = Stock{strings.TrimSpace(getRandomString(stockSlice)), "Nikkei"}
+
+	return
+}
+
 func GetRandomSPStock() (stock Stock, err error) {
 	rint.Init()
 	stockSlice, err := getStandardPoorsStocks()
@@ -206,7 +252,7 @@ func GetRandomSPStock() (stock Stock, err error) {
 
 func GetRandomIndexStock() (stock Stock, err error) {
 	rint.Init()
-	stockFuncs := []func() (Stock, error){GetRandomNasdaqStock, GetRandomSPStock, GetRandomFinancialTimesStock, GetRandomItalianFinancialTimesStock, GetRandomDaxStock}
+	stockFuncs := []func() (Stock, error){GetRandomNasdaqStock, GetRandomSPStock, GetRandomNikkeiStock, GetRandomFinancialTimesStock, GetRandomItalianFinancialTimesStock, GetRandomDaxStock}
 	stock, err = stockFuncs[rint.GenRange(0, len(stockFuncs))]()
 	return
 }

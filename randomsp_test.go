@@ -29,7 +29,7 @@ func TestIntegrationAcronymsReturned(t *testing.T) {
 
 	dax, err := getDaxStocks()
 	if err != nil {
-		t.Fatalf("acronym integration test failed with the following error: %s", err)
+		t.Fatalf("acronym integration test failed getting Dax stocks with the following error: %s", err)
 	}
 
 	daxIdx := testStockIndex{
@@ -39,7 +39,7 @@ func TestIntegrationAcronymsReturned(t *testing.T) {
 
 	ft, err := getFinancialTimesStocks()
 	if err != nil {
-		t.Fatalf("acronym integration test failed with the following error: %s", err)
+		t.Fatalf("acronym integration test failed getting Financial Times stocks with the following error: %s", err)
 	}
 
 	ftIdx := testStockIndex{
@@ -49,7 +49,7 @@ func TestIntegrationAcronymsReturned(t *testing.T) {
 
 	ift, err := getItalianFinancialTimesStocks()
 	if err != nil {
-		t.Fatalf("acronym integration test failed with the following error: %s", err)
+		t.Fatalf("acronym integration test failed getting Italian Financial Times stocks with the following error: %s", err)
 	}
 
 	iftIdx := testStockIndex{
@@ -59,7 +59,7 @@ func TestIntegrationAcronymsReturned(t *testing.T) {
 
 	n, err := getNasdaqStocks()
 	if err != nil {
-		t.Fatalf("acronym integration test failed with the following error: %s", err)
+		t.Fatalf("acronym integration test failed getting Nasdaq stocks with the following error: %s", err)
 	}
 
 	nIdx := testStockIndex{
@@ -67,9 +67,19 @@ func TestIntegrationAcronymsReturned(t *testing.T) {
 		n,
 	}
 
+	nik, err := getNikkeiStocks()
+	if err != nil {
+		t.Fatalf("acronym integration test failed getting Nikkei stocks with the following error: %s", err)
+	}
+
+	nikIdx := testStockIndex{
+		"Nikkei",
+		nik,
+	}
+
 	sp, err := getStandardPoorsStocks()
 	if err != nil {
-		t.Fatalf("acronym integration test failed with the following error: %s", err)
+		t.Fatalf("acronym integration test failed getting StandardPoors stocks with the following error: %s", err)
 	}
 
 	spIdx := testStockIndex{
@@ -81,6 +91,7 @@ func TestIntegrationAcronymsReturned(t *testing.T) {
 	stocks = append(stocks, ftIdx)
 	stocks = append(stocks, iftIdx)
 	stocks = append(stocks, nIdx)
+	stocks = append(stocks, nikIdx)
 	stocks = append(stocks, spIdx)
 
 	// Create Regex To Test that inputs have sequences of capital letters (prove that it is a stock quote acryonym
@@ -104,6 +115,7 @@ type testStockFn struct {
 func TestIntegrationStockStringsRemoveSpaces(t *testing.T) {
 	stockFuncs := []testStockFn{
 		testStockFn{Name: "GetRandomNasdaqStock", Fn: GetRandomNasdaqStock},
+		testStockFn{Name: "GetRandomNikkeiStock", Fn: GetRandomNikkeiStock},
 		testStockFn{Name: "GetRandomSPStock", Fn: GetRandomSPStock},
 		testStockFn{Name: "GetRandomFinancialTimesStock", Fn: GetRandomFinancialTimesStock},
 		testStockFn{Name: "GetRandomItalianFinancialTimesStock", Fn: GetRandomItalianFinancialTimesStock},
