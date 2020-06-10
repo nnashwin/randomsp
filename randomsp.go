@@ -166,7 +166,7 @@ func getStandardPoorsStocks() (stocks []string, err error) {
 		return
 	}
 
-	tbody := doc.Find("tbody").First()
+	tbody := doc.Find("#constituents > tbody")
 	tbody.Find("tr").Each(func(i int, s *goquery.Selection) {
 		td := s.Find("td:first-child")
 		if td.Text() != "" {
